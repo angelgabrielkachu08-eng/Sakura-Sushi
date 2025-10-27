@@ -1,0 +1,482 @@
+<!doctype html>
+<!--
+SakuraSushi - Single-file responsive website
+Technologies: HTML5 + Tailwind CSS (CDN) + Vanilla JS
+How to use: save as `index.html` and abrir en el navegador. Images are loaded from Unsplash.
+-->
+
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SakuraSushi — Restaurante Asiático</title>
+  <meta name="description" content="SakuraSushi - Menú, Reservas y contacto. Página responsive con diseño inspirado en Asia." />
+
+  <!-- Tailwind CDN (Play CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom theme tweaks */
+    :root{
+      --accent:#b91c1c; /* rojo */
+      --accent-dark:#7f1010;
+      --gold:#d4af37;
+    }
+    /* Smooth scroll behavior for anchors */
+    html { scroll-behavior: smooth; }
+
+    /* WhatsApp pulse */
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1 }
+      70% { transform: scale(1.15); opacity: .7 }
+      100% { transform: scale(1); opacity: 1 }
+    }
+    .pulse { animation: pulse 2s infinite; }
+
+    /* subtle glass effect for overlays */
+    .glass { background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); }
+  </style>
+</head>
+<body class="bg-[#0b0b0b] text-gray-100 antialiased leading-relaxed">
+
+  <!-- NAVBAR -->
+  <header class="fixed inset-x-0 top-0 z-40 bg-black/60 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="#home" class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=3b3a4b1b3a8a6e6b" alt="logo" class="h-10 w-10 rounded-full object-cover shadow-lg" />
+          <span class="font-bold text-lg text-white">SakuraSushi</span>
+        </a>
+
+        <!-- Desktop menu -->
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a href="#menu" class="hover:text-[#b91c1c]">Menú</a>
+          <a href="#destacados" class="hover:text-[#b91c1c]">Destacados</a>
+          <a href="#reservas" class="hover:text-[#b91c1c]">Reservas</a>
+          <a href="#ubicacion" class="hover:text-[#b91c1c]">Ubicación</a>
+          <a href="#contacto" class="hover:text-[#b91c1c]">Contacto</a>
+          <button id="cta-desktop" class="ml-2 px-4 py-2 rounded-md bg-[#b91c1c] text-white text-sm hover:bg-[#7f1010]">Reservar</button>
+        </nav>
+
+        <!-- Mobile hamburger -->
+        <div class="md:hidden">
+          <button id="btn-mobile" aria-label="Abrir menú" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#b91c1c]">
+            <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu panel -->
+    <div id="mobile-panel" class="md:hidden hidden">
+      <div class="px-4 pt-2 pb-6 space-y-2">
+        <a href="#menu" class="block px-3 py-2 rounded hover:bg-white/5">Menú</a>
+        <a href="#destacados" class="block px-3 py-2 rounded hover:bg-white/5">Destacados</a>
+        <a href="#reservas" class="block px-3 py-2 rounded hover:bg-white/5">Reservas</a>
+        <a href="#ubicacion" class="block px-3 py-2 rounded hover:bg-white/5">Ubicación</a>
+        <a href="#contacto" class="block px-3 py-2 rounded hover:bg-white/5">Contacto</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="home" class="pt-20">
+
+    <!-- HERO / BANNER -->
+    <section class="relative">
+      <img src="banner.jpg" alt=sushi banner class="w-full h-[60vh] object-cover brightness-75" />
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="max-w-3xl text-center px-6">
+          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">SakuraSushi</h1>
+          <p class="mt-3 text-lg sm:text-xl text-gray-200">Sabores auténticos de Asia — sushi fresco, platos calientes y bebidas selectas.</p>
+          <div class="mt-6 flex flex-col sm:flex-row items-center gap-4 justify-center">
+            <a href="#menu" class="px-6 py-3 bg-transparent border-2 border-white rounded-md text-white hover:bg-white hover:text-black transition">Ver Menú</a>
+            <a href="#reservas" class="px-6 py-3 bg-[#b91c1c] rounded-md text-white hover:bg-[#7f1010] transition">Reservar Mesa</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADOS -->
+    <section id="destacados" class="max-w-6xl mx-auto px-4 py-12">
+      <h2 class="text-2xl font-bold text-white mb-4">Platos Destacados</h2>
+      <p class="text-gray-300 mb-6">Nuestros favoritos seleccionados por el chef.</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Card 1 -->
+        <article class="bg-gray-900 rounded-xl overflow-hidden shadow-lg transform hover:-translate-y-1 transition">
+          <img src="sashimi.jpeg" alt="sushi" class="w-full h-40 object-cover" />
+          <div class="p-4">
+            <h3 class="font-semibold">Sashimi Deluxe</h3>
+            <p class="text-sm text-gray-300 mt-2">Selección de los mejores cortes frescos servidos con salsa especial.</p>
+            <div class="mt-3 flex items-center justify-between">
+              <span class="font-bold">$12.900</span>
+              <button class="px-3 py-1 rounded bg-[#b91c1c] text-white text-sm">Pedir</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="bg-gray-900 rounded-xl overflow-hidden shadow-lg transform hover:-translate-y-1 transition">
+          <img src="tonkotsu.jpeg" alt="ramen" class="w-full h-40 object-cover" />
+          <div class="p-4">
+            <h3 class="font-semibold">Ramen Tonkotsu</h3>
+            <p class="text-sm text-gray-300 mt-2">Caldo cremoso, fideos artesanales y cerdo braseado.</p>
+            <div class="mt-3 flex items-center justify-between">
+              <span class="font-bold">$9.500</span>
+              <button class="px-3 py-1 rounded bg-[#b91c1c] text-white text-sm">Pedir</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="bg-gray-900 rounded-xl overflow-hidden shadow-lg transform hover:-translate-y-1 transition">
+          <img src="tempura.jpeg" alt="tempura" class="w-full h-40 object-cover" />
+          <div class="p-4">
+            <h3 class="font-semibold">Tempura Mix</h3>
+            <p class="text-sm text-gray-300 mt-2">Verduras y langostinos en tempura crujiente con salsa tentsuyu.</p>
+            <div class="mt-3 flex items-center justify-between">
+              <span class="font-bold">$7.800</span>
+              <button class="px-3 py-1 rounded bg-[#b91c1c] text-white text-sm">Pedir</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="bg-gray-900 rounded-xl overflow-hidden shadow-lg transform hover:-translate-y-1 transition">
+          <img src="mochi.jpeg" alt="postre" class="w-full h-40 object-cover" />
+          <div class="p-4">
+            <h3 class="font-semibold">Mochi Variado</h3>
+            <p class="text-sm text-gray-300 mt-2">Bocaditos dulces de arroz rellenos con helado o frutilla.</p>
+            <div class="mt-3 flex items-center justify-between">
+              <span class="font-bold">$3.200</span>
+              <button class="px-3 py-1 rounded bg-[#b91c1c] text-white text-sm">Pedir</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- MENÚ COMPLETO -->
+    <section id="menu" class="bg-gradient-to-b from-black/60 to-black py-12">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl font-bold text-white mb-4">Menú</h2>
+        <p class="text-gray-300 mb-8">Explora nuestras categorías. Precios vigentes y descripciones claras.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Column 1 -->
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">Entradas</h3>
+              <ul class="space-y-3">
+                <li class="flex gap-4 bg-gray-900 p-3 rounded items-center"></li>
+                 <img src="gyoza.jpeg" class="h-16 w-16 rounded object-cover" alt="Gyoza">
+                  <div>
+                    <strong>Gyoza (6u)</strong>
+                    <p class="text-sm text-gray-300">Empanaditas japonesas, rellenas de cerdo y pollo.</p>
+                  </div>
+                  <span class="font-bold">$3.500</span>
+                </li>
+
+                <li class="flex gap-4 bg-gray-900 p-3 rounded items-center"></li>
+                  <img src="edamame.jpeg" class="h-16 w-16 rounded object-cover" alt="Edamame">
+                  <div>
+                    <strong>Edamame</strong>
+                    <p class="text-sm text-gray-300">Vainas de soja salteadas con sal marina.</p>
+                  </div>
+                  <span class="font-bold">$2.200</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">Platos Principales</h3>
+              <ul class="space-y-3">
+                <li class="flex gap-4 bg-gray-900 p-3 rounded items-center"></li>
+                <img src="yakimeshi.jpeg" class="h-16 w-16 rounded object-cover" alt="yakimeshi">
+
+                  <div>
+                    <strong>Yakimeshi</strong>
+                    <p class="text-sm text-gray-300">Arroz salteado con vegetales y huevo.</p>
+                  </div>
+                  <span class="font-bold">$6.000</span>
+                </li>
+
+                <li class="flex gap-4 bg-gray-900 p-3 rounded items-center"></li>
+                <img src="teriyaki.jpeg" class="h-16 w-16 rounded object-cover" alt="teriyaki">
+                  <div>
+                    <strong>Pollo Teriyaki</strong>
+                    <p class="text-sm text-gray-300">Pollo grillado con salsa teriyaki casera.</p>
+                  </div>
+                  <span class="font-bold">$7.200</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">Sushi</h3>
+              <ul class="space-y-3">
+                <li class="flex gap-4 bg-gray-900 p-3 rounded items-center"></li>
+                <img src="maki.jpeg" class="h-16 w-16 rounded object-cover" alt="maki">
+                  <div>
+                    <strong>Maki Clásico (6u)</strong>
+                    <p class="text-sm text-gray-300">Arroz, nori y relleno a elección.</p>
+                  </div>
+                  <span class="font-bold">$5.800</span>
+                </li>
+
+                <li class="flex gap-4 bg-gray-900 p-3 rounded items-center"></li>
+                <img src="premium.jpeg" class="h-16 w-16 rounded object-cover" alt="combo">
+                  <div>
+                    <strong>Combo Premium</strong>
+                    <p class="text-sm text-gray-300">Selección variada para 2 personas.</p>
+                  </div>
+                  <span class="font-bold">$18.500</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">Bebidas</h3>
+              <ul class="space-y-3">
+                <li class="flex gap-4 bg-gray-900 p-3 rounded items-center"></li>
+                <img src="te.jpeg" class="h-16 w-16 rounded object-cover" alt="té verde">
+                  <div>
+                    <strong>Té Verde</strong>
+                    <p class="text-sm text-gray-300">Infusión tradicional.</p>
+                  </div>
+                  <span class="font-bold">$900</span>
+                </li>
+
+                <li class="flex gap-4 bg-gray-900 p-3 rounded items-center"></li>
+                <img src="Japanese sake (1).jpeg" class="h-16 w-16 rounded object-cover" alt="sake">
+                  <div>
+                    <strong>Sake (200ml)</strong>
+                    <p class="text-sm text-gray-300">Sake premium frío.</p>
+                  </div>
+                  <span class="font-bold">$4.200</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RESERVAS -->
+    <section id="reservas" class="max-w-4xl mx-auto px-4 py-12">
+      <h2 class="text-2xl font-bold text-white mb-4">Reservas</h2>
+      <p class="text-gray-300 mb-6">Reservá tu mesa en pocos pasos. Opciones: Reserva Normal y Reserva VIP.</p>
+
+      <form id="form-reserva" class="bg-gray-900 p-6 rounded-lg shadow space-y-4" novalidate>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm text-gray-300">Nombre completo</label>
+            <input required name="nombre" type="text" class="mt-1 block w-full bg-black/30 border border-gray-800 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#b91c1c]" placeholder="Juan Pérez">
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-300">Teléfono</label>
+            <input required name="telefono" type="tel" pattern="[0-9+\- ]{6,}" class="mt-1 block w-full bg-black/30 border border-gray-800 rounded px-3 py-2" placeholder="3765004174">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="text-sm text-gray-300">Fecha</label>
+            <input required name="fecha" type="date" class="mt-1 block w-full bg-black/30 border border-gray-800 rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-300">Hora</label>
+            <input required name="hora" type="time" class="mt-1 block w-full bg-black/30 border border-gray-800 rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-300">Personas</label>
+            <input required name="personas" type="number" min="1" max="20" value="2" class="mt-1 block w-full bg-black/30 border border-gray-800 rounded px-3 py-2">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm text-gray-300">Tipo de reserva</label>
+            <select name="tipo" class="mt-1 block w-full bg-black/30 border border-gray-800 rounded px-3 py-2">
+              <option value="normal">Reserva Normal</option>
+              <option value="vip">Reserva VIP</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-300">Notas</label>
+            <input name="notas" type="text" class="mt-1 block w-full bg-black/30 border border-gray-800 rounded px-3 py-2" placeholder="Solicitudes especiales">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <button type="submit" class="px-5 py-2 rounded bg-[#b91c1c] text-white">Reservar</button>
+          <button type="button" id="btn-reset" class="px-4 py-2 rounded border border-gray-700">Limpiar</button>
+          <p id="form-msg" class="text-sm text-green-400 hidden"></p>
+        </div>
+      </form>
+
+      <p class="text-gray-400 mt-4 text-sm">* Recibirás una confirmación por teléfono. Las reservas VIP incluyen atención prioritaria y mesa reservada.</p>
+    </section>
+
+    <!-- UBICACIÓN Y HORARIOS -->
+    <section id="ubicacion" class="max-w-6xl mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div>
+          <h2 class="text-2xl font-bold text-white mb-4">Ubicación & Horarios</h2>
+          <p class="text-gray-300 mb-4">Nos encontrás en el corazón de la ciudad. Vení a probar nuestros platos o hacé tu pedido.</p>
+
+          <div class="bg-gray-900 p-4 rounded space-y-3">
+            <p><strong>Dirección:</strong> Av. 123 1234, posadas</p>
+            <p><strong>Teléfono:</strong> 3765004174</p>
+            <p><strong>Horario:</strong></p>
+            <ul class="list-disc list-inside text-gray-300">
+              <li>Lunes a Viernes: 12:00 - 15:00 | 19:00 - 23:00</li>
+              <li>Sábados: 12:00 - 23:30</li>
+              <li>Domingos: 12:00 - 22:00</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-2">Mapa</h3>
+          <!-- Embedded map placeholder (Google Maps embed could be used in producción) -->
+          <div class="w-full h-64 bg-gray-800 rounded flex items-center justify-center text-gray-400">Mapa de ubicación (replace con embed si corresponde)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER / CONTACTO -->
+    <footer id="contacto" class="bg-black/80 py-8 mt-12">
+      <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-gray-300">
+        <div>
+          <h4 class="font-bold text-white">SakuraSushi</h4>
+          <p class="text-sm mt-2">Sabores auténticos de Asia. Cocina fresca y atención cordial.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white">Enlaces</h4>
+          <ul class="mt-2 space-y-1 text-sm">
+            <li><a href="#menu" class="hover:text-[#b91c1c]">Menú</a></li>
+            <li><a href="#reservas" class="hover:text-[#b91c1c]">Reservas</a></li>
+            <li><a href="#ubicacion" class="hover:text-[#b91c1c]">Ubicación</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white">Contacto</h4>
+          <p class="text-sm mt-2">Tel: 3765004174</p>
+          <p class="text-sm">gmail: gallardoprimero@gmail.com</p>
+        </div>
+      </div>
+
+      <div class="max-w-6xl mx-auto px-4 mt-6 text-sm text-gray-500 border-t border-gray-800 pt-4">© <span id="anio"></span> SakuraSushi — Todos los derechos reservados.</div>
+    </footer>
+
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <a id="whatsapp-btn" aria-label="Contactar por WhatsApp" href="https://wa.me/3765004174" target="_blank" rel="noopener" class="fixed right-5 bottom-5 z-50">
+      <div class="w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg pulse">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 11-7.6-12.3 8.38 8.38 0 013.8.9L21 3v9.5z" />
+        </svg>
+      </div>
+    </a>
+
+  </main>
+
+  <!-- SCRIPTS -->
+  <script>
+    // small helper
+    const q = s => document.querySelector(s);
+
+    // Mobile menu toggle
+    const btnMobile = q('#btn-mobile');
+    const panel = q('#mobile-panel');
+    const iconOpen = q('#icon-open');
+    const iconClose = q('#icon-close');
+    btnMobile?.addEventListener('click', () => {
+      panel.classList.toggle('hidden');
+      iconOpen.classList.toggle('hidden');
+      iconClose.classList.toggle('hidden');
+    });
+
+    // CTA desktop scroll to reservas
+    q('#cta-desktop')?.addEventListener('click', () => {
+      q('#reservas').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Year in footer
+    q('#anio').textContent = new Date().getFullYear();
+
+    // Reservation form handling (simple, client-side)
+    const form = q('#form-reserva');
+    const msg = q('#form-msg');
+    const resetBtn = q('#btn-reset');
+
+    function showMessage(text, success=true){
+      msg.textContent = text;
+      msg.classList.remove('hidden');
+      msg.classList.toggle('text-green-400', success);
+      msg.classList.toggle('text-red-400', !success);
+      setTimeout(()=> msg.classList.add('hidden'), 5000);
+    }
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const reserva = Object.fromEntries(data.entries());
+
+      // Basic validation
+      if(!reserva.nombre || !reserva.telefono || !reserva.fecha || !reserva.hora){
+        showMessage('Por favor completá todos los campos obligatorios.', false);
+        return;
+      }
+
+      // Simular envío: guardar en localStorage y mostrar confirmación
+      const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
+      reservas.push({ ...reserva, creado: new Date().toISOString() });
+      localStorage.setItem('reservas', JSON.stringify(reservas));
+
+      showMessage('Reserva enviada. Te llamaremos para confirmar.');
+      form.reset();
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      form.reset();
+    });
+
+    // Small accessibility: close mobile panel when clicking a link
+    panel?.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        panel.classList.add('hidden');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      });
+    });
+
+    // Smooth reveal on scroll (very small, lightweight)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.remove('opacity-0', 'translate-y-6');
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('section').forEach(sec => {
+      sec.classList.add('opacity-0', 'translate-y-6', 'transition', 'duration-700');
+      observer.observe(sec);
+    });
+
+  </script>
+</body>
+</html>
